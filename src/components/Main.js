@@ -3,6 +3,7 @@ import { Row, Col } from 'antd'
 import axios from 'axios';
 import SatSetting from "./SatSetting"
 import SatelliteList from "./SatelliteList";
+import WorldMap from "./WorldMap";
 import {NEARBY_SATELLITE, SAT_API_KEY, STARLINK_CATEGORY} from "../constants";
 
 class Main extends Component {
@@ -48,16 +49,27 @@ class Main extends Component {
             });
     };
 
+    showMap = selected => {
+        this.setState(preState => ({
+            ...preState,
+            isLoadingMap: true,
+            satList: [...selected]
+        }));
+    };
+
     render() {
         const { satInfo } = this.state;
         return (
             <Row className="main">
                 <Col span={8} className="left-side">
                     <SatSetting onShow={this.showNearbySatellite}/>
-                    <SatelliteList satInfo={satInfo} isLoad={this.state.isLoadingList} />
+                    <SatelliteList
+                        satInfo={satInfo}
+                        isLoad={this.state.isLoadingList}
+                        onShowMap = {this.showMap} />
                 </Col>
                 <Col span={16} className="right-side">
-                    Right
+                    <WorldMap />
                 </Col>
             </Row>
         );
